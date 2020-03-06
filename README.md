@@ -1,5 +1,10 @@
 # e-wallet
 
+## Javascript frameworks: Vue.js - Individual Assignment
+
+First big assignment for creating a Singel Page Application in Vue.js
+
+
 ## Project setup
 ```
 npm install
