@@ -1,32 +1,83 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
-    <router-view/>
+    <router-view v-bind:cardList="cardList" v-on:updateCardList="updateCardList" />
   </div>
 </template>
 
-<style lang="scss">
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
-
-#nav {
-  padding: 30px;
-
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-
-    &.router-link-exact-active {
-      color: #42b983;
+<script>
+  import defaultcards from './assets/default-cards.json'
+  export default {
+    data() {
+      return {
+        cardList: '',
+        createNewCardList: false
+      }
+    },
+    methods: {
+      updateCardList: function(value) {
+        this.createNewCardList = value;
+      },
+      createCardList: function() {
+        if(localStorage.getItem('cards')) {
+          this.cardList = JSON.parse(localStorage.getItem('cards'));
+        } else {
+          localStorage.setItem('cards', JSON.stringify(this.defaultcards));
+          this.cardList = JSON.parse(localStorage.getItem('cards'));
+        }
+      }
+    },
+    created() {
+      this.createCardList();
+    },
+    computed: {
+        defaultcards() {
+            return defaultcards.defaultcards;
+        }
+    },
+    watch: {
+      createNewCardList: function() {
+        if(this.createNewCardList === true) {
+          this.createCardList();
+          
+          this.createNewCardList = false;
+        }
+      }
     }
   }
+</script>
+
+<style lang="scss">
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
+
+p {
+  font-size: 1.125rem;
+}
+
+#app {
+  font-family: 'PT Mono';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem 0;
+}
+
+.main__heading {
+  font-family: Source Sans Pro;
+  text-transform: uppercase;
+  font-size: 2.175rem;
+  margin-bottom: 1rem;
+}
+
+.main--container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 </style>
